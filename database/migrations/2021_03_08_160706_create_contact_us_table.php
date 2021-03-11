@@ -17,11 +17,11 @@ class CreateContactUsTable extends Migration
             $table->increments('id');
 
             $table->string('Country');
-            // $table->string('Country_en');
+
             $table->string('city');
-            // $table->string('city_en');
+
             $table->string('adress');
-            // $table->string('adress_en');
+            
             $table->string('phone_number');
             $table->string('mobile_number1')->nullable();
             $table->string('mobile_number2')->nullable();

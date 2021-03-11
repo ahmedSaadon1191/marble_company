@@ -1,5 +1,5 @@
-  <!-- edit_modal_Grade -->
-  <div class="modal fade" id="edit{{ $value->id }}" tabindex="-1" role="dialog"
+<!-- edit_modal_Grade -->
+<div class="modal fade" id="edit{{ $value->id }}" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
    <div class="modal-dialog" role="document">
        <div class="modal-content">

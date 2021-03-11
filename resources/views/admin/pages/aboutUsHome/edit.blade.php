@@ -18,6 +18,7 @@
                <form action="{{ route('aboutUsHome.update',$value->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
+                <input type="hidden" value="{{ $value->id }}">
 
                 <div class="text-center">
                     <img src="{{ asset('assets/images/'. $value->logo) }}" alt="" style="height: 100px; width:100px">
@@ -42,14 +43,18 @@
                         <label for="Name" class="mr-sm-2">
                                وصف الشركة بالعربي
                             :</label>
-                        <input id="Name" type="text" name="descreption_ar" class="form-control" value="{{ $value->getTranslation('descreption','ar') }}">
+                        <textarea name="descreption_ar" id="" cols="30" rows="10" class="form-control">
+                            value="{{ $value->getTranslation('descreption','ar') }}
+                        </textarea>
+
                     </div>
                     <div class="col-sm-6">
                         <label for="Name_en" class="mr-sm-2">
                                وصف الشركة بالانجليزية
                          :</label>
-                        <input type="text" class="form-control" name="descreption_en" required value="{{ $value->getTranslation('descreption','en') }}">
-                    </div>
+                         <textarea name="descreption_en" id="" cols="30" rows="10" class="form-control">
+                            value="{{ $value->getTranslation('descreption','en') }}
+                        </textarea>                    </div>
                 </div>
                 <div class="form-group">
                     <label for=""> اضافة صورة</label>

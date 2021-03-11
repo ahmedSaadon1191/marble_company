@@ -33,13 +33,13 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
                        <label for="Name" class="mr-sm-6">
                               وصف الشركة بالعربي
                            :</label>
-                       <input id="Name" type="text" name="descreption_ar" class="form-control">
+                       <textarea name="descreption_ar" id="" cols="30" rows="10" class="form-control"></textarea>
                    </div>
                    <div class="col-sm-6">
                        <label for="Name_en" class="mr-sm-6">
                               وصف الشركة بالانجليزية
                         :</label>
-                       <input type="text" class="form-control" name="descreption_en" required>
+                       <textarea name="descreption_en" id="" cols="30" rows="10" class="form-control"></textarea>
                    </div>
                </div>
                <div class="form-group">

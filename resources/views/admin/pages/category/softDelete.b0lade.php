@@ -2,13 +2,13 @@
 @section('css')
     @toastr_css
 @section('title')
-    الاقسام الغير مفعلة
+    {{ trans('Grades_trans.title_page') }}
 @stop
 @endsection
 @section('page-header')
     <!-- breadcrumb -->
 @section('PageTitle')
-الاقسام الغير مفعلة
+    {{trans('main_trans.Grades')}}
 @stop
 <!-- breadcrumb -->
 @endsection
@@ -39,38 +39,41 @@
                             <thead>
                             <tr>
                                 <th>#</th>
-                                <th>اسم القسم بالعربي</th>
-                                <th>اسم القسم بالانجليزية</th>
+                                <th>الصورة</th>
+                                <th>الوصف بالعربي</th>
+                                <th>الوصف بالانجليزية</th>
                                 <th>الاجرائات</th>
                             </tr>
                             </thead>
                             <tbody>
                             <?php $i = 0; ?>
-                            @foreach ($category as $value)
+                            @foreach ($aboutUs as $value)
                                 <tr>
                                     <?php $i++; ?>
                                     <td>{{ $i }}</td>
-                                    <td>{{ $value->getTranslation('name','ar') }}</td>
-                                    <td>{{ $value->getTranslation('name','en') }}</td>
-
+                                    <td>{{ $value->getTranslation('descreption','ar') }}</td>
+                                    <td>{{ $value->getTranslation('descreption','en') }}</td>
+                                    <td style="height: 50px; width: 50px;">
+                                        <img src="{{ asset('assets/images/'.$value->logo) }}" alt="">
+                                    </td>
                                     <td>
 
                                        <div class="row">
                                            <div class="col-sm-3">
-                                            <form action="{{ route('category.restore',$value->id) }}" method="post">
+                                            <form action="{{ route('aboutUs.restore',$value->id) }}" method="post">
                                                 @csrf
 
-                                                <input type="submit" value="تفعيل" class="btn btn-info btn-sm">
+                                                <input type="submit" value="Restore" class="btn btn-info btn-sm">
 
 
                                             </form>
                                            </div>
 
                                            <div class="col-sm-3">
-                                            <form action="{{ route('category.forceDelete',$value->id) }}" method="post">
+                                            <form action="{{ route('aboutUs.forceDelete',$value->id) }}" method="post">
                                                 @csrf
 
-                                                <input type="submit" value="حزف نهائي" class="btn btn-danger btn-sm">
+                                                <input type="submit" value="Delete" class="btn btn-danger btn-sm">
                                             </form>
                                            </div>
                                        </div>
@@ -85,6 +88,7 @@
         </div>
 
 
+        @include('admin.pages.aboutUs.create')
 
     </div>
 

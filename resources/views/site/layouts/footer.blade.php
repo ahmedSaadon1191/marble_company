@@ -22,13 +22,13 @@
                     <label class="footer-location-labelfather">
                         aser al-diyaa for marble
                         <br>
-                        <label class="footer-location-labelperant">biddya - salfeet - palestine</label><br>
+                        <label class="footer-location-labelperant">{{ $contactUs[0]->adress }} - {{ $contactUs[0]->city }} - {{ $contactUs[0]->Country }}</label><br>
                         <label class="footer-location-labelperant">
                             <span class="fa-stack fa-2x" style="vertical-align: top;">
                                 <i class="far fa-circle fa-stack-2x"></i>
                                 <i style="font-size: 13px;" class="fas fa-phone-alt fa-stack-1x"></i>
                             </span>
-                            +972568830132
+                            {{ $contactUs[0]->whatsApp_number }}
                         </label>
                     </label>
                 </p>

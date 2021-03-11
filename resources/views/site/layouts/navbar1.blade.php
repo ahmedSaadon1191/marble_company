@@ -38,7 +38,7 @@
                 <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#search-nav-modal"><i class="fas fa-search"></i></a>
             </li>
             <li class="nav-item dropdown navlanguage">
-                <a style="color: #fff !important;
+                {{-- <a style="color: #fff !important;
                 font-size: 16px;
                 background: #2f3548;
                 margin-top: 10px;
@@ -49,7 +49,26 @@
                 <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="#">en</a></li>
                 <li><a class="dropdown-item" href="#">ar</a></li>
-                </ul>
+                </ul> --}}
+
+                <div class="btn-group mb-1">
+                    <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      @if (App::getLocale() == 'ar')
+                      {{ LaravelLocalization::getCurrentLocaleName() }}
+                     <img src="{{ URL::asset('assets/images/flags/EG.png') }}" alt="">
+                      @else
+                      {{ LaravelLocalization::getCurrentLocaleName() }}
+                      <img src="{{ URL::asset('assets/images/flags/US.png') }}" alt="">
+                      @endif
+                      </button>
+                    <div class="dropdown-menu">
+                        @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                                <a class="dropdown-item" rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                                    {{ $properties['native'] }}
+                                </a>
+                        @endforeach
+                    </div>
+                </div>
             </li>
             </ul>
         </div>

@@ -16,9 +16,7 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->text('descreption');
-            $table->integer('category_id');
-            $table->boolean('is_important')->default(0);
+            $table->boolean('   ')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

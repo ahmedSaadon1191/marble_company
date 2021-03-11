@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\AboutHome;
 use Illuminate\Http\Request;
+use App\Http\Requests\AboutUSHome;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
@@ -17,8 +18,9 @@ class AboutUsHomeController extends Controller
         return view('admin.pages.aboutUsHome.index',compact('aboutUs'));
     }
 
-    public function store(Request $request)
+    public function store(AboutUSHome $request)
     {
+
 
         try
         {
@@ -42,8 +44,8 @@ class AboutUsHomeController extends Controller
                         $create->save();
                     }
                 DB::commit();
-
-                return redirect()->route('aboutUsHome.index')->with(['success' => 'تم الاضافة بنجاح']);
+                toastr()->success(trans('messages.success'));
+                return redirect()->route('aboutUsHome.index');
             }else
             {
                 return redirect()->route('aboutUsHome.index')->with(['success' => 'لا يمكن اضافة اكثر من 2 تفاصيل']);
@@ -53,11 +55,11 @@ class AboutUsHomeController extends Controller
         {
             DB::rollback();
             return $th;
-            return redirect()->route('aboutUsHome.index')->with(['error' => 'هناك خطاء ما برجاء المحاولة فيما بعد']);
+            return redirect()->route('aboutUsHome.index')->withErrors(['error' => $e->getMessage()]);
         }
     }
 
-    public function update(Request $request,$id)
+    public function update(AboutUSHome $request,$id)
     {
         $data = AboutHome::find($id);
         // return $data;
@@ -65,7 +67,7 @@ class AboutUsHomeController extends Controller
         {
             if (!$data)
             {
-                return redirect()->route('aboutUs.index')->with(['error' => 'هذا العنصر غير موجود']);
+                return redirect()->route('aboutUs.index')->withErrors(['error' => $e->getMessage()]);
 
             }else
             {
@@ -84,14 +86,15 @@ class AboutUsHomeController extends Controller
                         $data->update(['logo' => $photo]);
                     }
                 DB::commit();
-                return redirect()->route('aboutUsHome.index')->with(['success' => 'تم التعديل بنجاح']);
+                toastr()->success(trans('messages.success'));
+                return redirect()->route('aboutUsHome.index');
             }
 
         } catch (\Throwable $th)
         {
             DB::rollback();
             return $th;
-            return redirect()->route('aboutUsHome.index')->with(['error' => 'هناك خطاء ما برجاء المحاولة فيما بعد']);
+            return redirect()->route('aboutUsHome.index')->withErrors(['error' => $e->getMessage()]);
         }
     }
 
@@ -103,18 +106,20 @@ class AboutUsHomeController extends Controller
         {
             if (!$data)
             {
-                return redirect()->route('aboutUsHome.index')->with(['error' => 'هذا العنصر غير موجود']);
+                return redirect()->route('aboutUsHome.index')->withErrors(['error' => $e->getMessage()]);
 
             }else
             {
                 $data->delete();
-                return redirect()->route('aboutUsHome.index')->with(['success' => 'تم مسح البيانات بنجاح']);
+                session()->flash('Delete_Succesfully');
+                toastr()->error(trans('messages.Delete'));
+                return redirect()->route('aboutUsHome.index');
             }
 
         } catch (\Throwable $th)
         {
             return $th;
-            return redirect()->route('aboutUsHome.index')->with(['error' => 'هناك خطاء ما برجاء المحاولة فيما بعد']);
+            return redirect()->route('aboutUsHome.index')->withErrors(['error' => $e->getMessage()]);
         }
     }
 
@@ -132,18 +137,19 @@ class AboutUsHomeController extends Controller
         {
             if (!$data)
             {
-                return redirect()->route('aboutUsHome.index')->with(['error' => 'هذا العنصر غير موجود']);
+                return redirect()->route('aboutUsHome.index')->withErrors(['error' => $e->getMessage()]);
 
             }else
             {
                 $data->restore();
-                return redirect()->route('aboutUsHome.index')->with(['success' => 'تم استرجاع بنجاح']);
+                toastr()->success(trans('messages.success'));
+                return redirect()->route('aboutUsHome.index');
             }
 
         } catch (\Throwable $th)
         {
             return $th;
-            return redirect()->route('aboutUsHome.index')->with(['error' => 'هناك خطاء ما برجاء المحاولة فيما بعد']);
+            return redirect()->route('aboutUsHome.index')->withErrors(['error' => $e->getMessage()]);
         }
     }
 
@@ -155,19 +161,21 @@ class AboutUsHomeController extends Controller
         {
             if (!$data)
             {
-                return redirect()->route('aboutUsHome.index')->with(['error' => 'هذا العنصر غير موجود']);
+                return redirect()->route('aboutUsHome.index')->withErrors(['error' => $e->getMessage()]);
 
             }else
             {
                 Storage::disk('public')->delete('/assets/images/',$data->logo);
                 $data->forceDelete();
-                return redirect()->route('aboutUsHome.index')->with(['success' => 'تم استرجاع بنجاح']);
+                session()->flash('Delete_Succesfully');
+                toastr()->error(trans('messages.Delete'));
+                return redirect()->route('aboutUsHome.index');
             }
 
         } catch (\Throwable $th)
         {
             return $th;
-            return redirect()->route('aboutUsHome.index')->with(['error' => 'هناك خطاء ما برجاء المحاولة فيما بعد']);
+            return redirect()->route('aboutUsHome.index')->withErrors(['error' => $e->getMessage()]);
         }
     }
 }

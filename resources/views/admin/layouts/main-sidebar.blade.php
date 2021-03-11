@@ -17,35 +17,38 @@
 
                     <!-- CATEGORIES-->
                     <li>
-                        <a href="javascript:void(0);" data-toggle="collapse" data-target="#Grades-menu">
-                            <div class="pull-left"><i class="fas fa-school"></i><span
-                                    class="right-nav-text">الاقسام الرئيسية</span></div>
+                        <a href="javascript:void(0);" data-toggle="collapse" data-target="#categories-menu">
+                            <div class="pull-left"><i class="fas fa-chalkboard"></i></i><span
+                                    class="right-nav-text">اقسام منتجاتنا</span></div>
                             <div class="pull-right"><i class="ti-plus"></i></div>
                             <div class="clearfix"></div>
                         </a>
-                        <ul id="Grades-menu" class="collapse" data-parent="#sidebarnav">
-                            <li>
-                                <a href="{{route('category.index')}}">
-                                    كل الاقسام الرئيسية
-                                </a>
-                                <a href="{{route('category.softDelete')}}">
-                                      الاقسام الرئيسية الغير مفعلة
-                                </a>
-                            </li>
+                        <ul id="categories-menu" class="collapse" data-parent="#sidebarnav">
+                            <li> <a href="{{ route('Categories.index') }}">اضافه قسم </a> </li>
+                            <li> <a href="{{ route('Categories.softDelete') }}"> الاقسام الغير مفعلة </a> </li>
 
                         </ul>
                     </li>
 
-                  
+                    <!-- PRODUCTS-->
+                    <li>
+                        <a href="javascript:void(0);" data-toggle="collapse" data-target="#products-menu">
+                            <div class="pull-left"><i class="fas fa-chalkboard"></i></i><span
+                                    class="right-nav-text"> منتجاتنا</span></div>
+                            <div class="pull-right"><i class="ti-plus"></i></div>
+                            <div class="clearfix"></div>
+                        </a>
+                        <ul id="products-menu" class="collapse" data-parent="#sidebarnav">
+                            <li> <a href="{{ route('products.index') }}">اضافه منتج </a> </li>
 
+                        </ul>
+                    </li>
 
-
-
-                    <!-- ABOUT US HOME-->
+                    <!-- ABOUT US-->
                     <li>
                         <a href="javascript:void(0);" data-toggle="collapse" data-target="#aboutUsHome-menu">
                             <div class="pull-left"><i class="fas fa-school"></i><span
-                                    class="right-nav-text">  عن الشركة في الصفحة الرئيسية</span></div>
+                                    class="right-nav-text">  عن الشركة الصفحة الرئيسية</span></div>
                             <div class="pull-right"><i class="ti-plus"></i></div>
                             <div class="clearfix"></div>
                         </a>

@@ -1,5 +1,5 @@
- <!-- delete_modal_Grade -->
- <div class="modal fade" id="delete{{ $value->id }}" tabindex="-1" role="dialog"
+<!-- delete_modal_Grade -->
+<div class="modal fade" id="delete{{ $value->id }}" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
    <div class="modal-dialog" role="document">
        <div class="modal-content">
@@ -32,3 +32,4 @@
        </div>
    </div>
 </div>
+© 2021 GitHub, Inc.

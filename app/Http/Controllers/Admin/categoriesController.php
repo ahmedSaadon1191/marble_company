@@ -4,139 +4,143 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 
 class categoriesController extends Controller
 {
+
+
     public function index()
     {
-        // return LaravelLocalization::getCurrentLocale();
+        $categories = Category::all();
 
-        $category = Category::all();
-        return view('admin.pages.category.index',compact('category'));
+        return view('admin.pages.category.index', compact('categories'));
+
     }
 
+    /**
+     * Show the form for creating a new resource.
+
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
-        try
-        {
-                $create = Category::create(
-                    [
-                        'name'  => ["en" => $request->name_en, "ar"  => $request->name_ar],
-                    ]);
 
-                return redirect()->route('category.index')->with(['success' => 'تم الاضافة بنجاح']);
-        } catch (\Throwable $th)
-        {
-            DB::rollback();
-            return $th;
-            return redirect()->route('category.index')->with(['error' => 'هناك خطاء ما برجاء المحاولة فيما بعد']);
+        if (Category::where('name->ar', $request->name_ar)->orWhere('name->en', $request->name_en)->exists()) {
+
+            return redirect()->back()->withErrors('اسم الحقل موجود بالفعل ');
         }
+
+        $request->validate([
+            'name_ar' => 'required|unique:categories,name->ar',
+            'name_en' => 'required|unique:categories,name->en',
+        ]);
+        try {
+            $category = Category::create([
+                'name' => ["en" => $request->name_en, "ar" => $request->name_ar],
+
+                'created_at' => Carbon::now(),
+            ]);
+            toastr()->success(trans('messages.success'));
+            return redirect()->route('Categories.index');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+
     }
 
-    public function update(Request $request,$id)
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
     {
-        $data = Category::find($id);
-
-        try
-        {
-            if (!$data)
-            {
-                return redirect()->route('category.index')->with(['error' => 'هذا العنصر غير موجود']);
-
-            }else
-            {
-
-                    $update = $data->update(
-                        [
-                            'name'  => ["en" => $request->name_en, "ar"  => $request->name_ar],
-                        ]);
-
-
-                return redirect()->route('category.index')->with(['success' => 'تم التعديل بنجاح']);
-            }
-
-        } catch (\Throwable $th)
-        {
-
-            return redirect()->route('category.index')->with(['error' => 'هناك خطاء ما برجاء المحاولة فيما بعد']);
-        }
+        //
     }
 
-    public function destroy($id)
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
     {
-        $data = Category::find($id);
-        // return $data;
-        try
-        {
-            if (!$data)
-            {
-                return redirect()->route('category.index')->with(['error' => 'هذا العنصر غير موجود']);
-
-            }else
-            {
-                $data->delete();
-                return redirect()->route('category.index')->with(['success' => 'تم مسح البيانات بنجاح']);
-            }
-
-        } catch (\Throwable $th)
-        {
-            return $th;
-            return redirect()->route('category.index')->with(['error' => 'هناك خطاء ما برجاء المحاولة فيما بعد']);
-        }
+        //
     }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        if (Category::where('name->ar', $request->name_ar)->orWhere('name->en', $request->name_en)->exists()) {
+
+            return redirect()->back()->withErrors('اسم الحقل موجود بالفعل ');
+        }
+
+        $request->validate([
+            'name_ar' => 'required|unique:categories,name->ar',
+            'name_en' => 'required|unique:categories,name->en',
+        ]);
+        try {
+            $category = Category::findOrFail($request->id)->update([
+                'name' => ["en" => $request->name_en, "ar" => $request->name_ar],
+
+                'created_at' => Carbon::now(),
+            ]);
+            toastr()->success(trans('messages.success'));
+            return redirect()->route('Categories.index');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request, $id)
+    {
+        try {
+            $patients = Category::findOrFail($request->id)->delete();
+            session()->flash('Delete_Succesfully');
+            toastr()->error(trans('messages.Delete'));
+
+            return redirect()->route('Categories.index');
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+
+    }
+
 
     public function softDelete()
     {
-        $category = Category::onlyTrashed()->get();
-        return view('admin.pages.category.softDelete',compact('category'));
-    }
-
-    public function restore($id)
-    {
-        $data = Category::withTrashed()->find($id);
-        // return $data;
-        try
-        {
-            if (!$data)
-            {
-                return redirect()->route('category.index')->with(['error' => 'هذا العنصر غير موجود']);
-
-            }else
-            {
-                $data->restore();
-                return redirect()->route('category.index')->with(['success' => 'تم استرجاع بنجاح']);
-            }
-
-        } catch (\Throwable $th)
-        {
-            return $th;
-            return redirect()->route('category.index')->with(['error' => 'هناك خطاء ما برجاء المحاولة فيما بعد']);
-        }
-    }
-
-    public function forceDelete($id)
-    {
-        $data = Category::withTrashed()->find($id);
-        // return $data;
-        try
-        {
-            if (!$data)
-            {
-                return redirect()->route('category.index')->with(['error' => 'هذا العنصر غير موجود']);
-
-            }else
-            {
-
-                $data->forceDelete();
-                return redirect()->route('category.index')->with(['success' => 'تم استرجاع بنجاح']);
-            }
-
-        } catch (\Throwable $th)
-        {
-            return $th;
-            return redirect()->route('category.index')->with(['error' => 'هناك خطاء ما برجاء المحاولة فيما بعد']);
-        }
+        // $categories = Category::onlyTrashed()->get();
+        return view('admin.pages.category.softDelete',compact('categories'));
     }
 
 }
